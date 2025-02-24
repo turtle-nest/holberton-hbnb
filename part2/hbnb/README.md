@@ -7,7 +7,7 @@
 This phase of the HBnB project involves implementing the core functionalities of the application using Python and Flask. The goal is to build the presentation and business logic layers, define essential classes, methods, and API endpoints based on the design created in the previous phase.
 
 ## Project Structure
-
+```
 hbnb/
 ├── app/
 │   ├── __init__.py
@@ -35,7 +35,7 @@ hbnb/
 ├── config.py
 ├── requirements.txt
 ├── README.md
-
+```
 ### Folder and File Descriptions
 
 - app/: Main application folder.
