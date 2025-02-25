@@ -33,3 +33,14 @@ class HBnBFacade:
     def update_amenity(self, amenity_id, amenity_data):
     # Placeholder for logic to update an amenity
         pass
+    def get_all_users(self):
+		users = self.user_repo.get_all("users")
+		return [{k: v for k, v in user.items() if k != "password"} for user in users]
+
+	def update_user(self, user_id, data):
+		"""Update an existant user"""
+		user = self.user_repo.update("users", user_id, data)
+		if user:
+			return {k: v for k, v in user.items() if k != "password"}
+		return None
+
