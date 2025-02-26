@@ -1,9 +1,9 @@
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import AmenityFacade  # Import Facade
+from app.services.facade import AmenityFacade
 
 api = Namespace('amenities', description='Amenity operations')
 
-# Define the amenity model for input validation
+
 amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')
 })
@@ -21,7 +21,7 @@ class AmenityList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new amenity"""
-        data = api.payload  # Get JSON input
+        data = api.payload
         if "name" not in data or not data["name"].strip():
             return {"error": "Name is required"}, 400
 
