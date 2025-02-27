@@ -55,5 +55,5 @@ class AmenityResource(Resource):
 
         update_amenity = HBnBFacade.update_amenity(amenity_id, {"name": name})
         if update_amenity:
-            return update_amenity, 200
+            return {"message": "Amenity updated successfully"}, 200
         return {"error": "Amenity not found"}, 404
