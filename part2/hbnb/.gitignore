@@ -1,0 +1,47 @@
+# Ignore the .venv/ directory
+.venv/
+
+# Ignore all binaries
+*.o
+*.out
+*.a
+*.so
+*.exe
+*.dll
+*.pyc
+*.pyo
+
+# Ignore cache files
+*.log
+*.swp
+*.bak
+
+# Ignore automatically generated files (like temporary files)
+*.tmp
+*.pid
+
+# Do not ignore the hbnb directory and its contents
+!hbnb/
+!hbnb/**/
+
+# Include specific files inside hbnb/
+!hbnb/app/__init__.py
+!hbnb/app/api/__init__.py
+!hbnb/app/api/v1/__init__.py
+!hbnb/app/api/v1/users.py
+!hbnb/app/api/v1/places.py
+!hbnb/app/api/v1/reviews.py
+!hbnb/app/api/v1/amenities.py
+!hbnb/app/models/__init__.py
+!hbnb/app/models/user.py
+!hbnb/app/models/place.py
+!hbnb/app/models/review.py
+!hbnb/app/models/amenity.py
+!hbnb/app/services/__init__.py
+!hbnb/app/services/facade.py
+!hbnb/app/persistence/__init__.py
+!hbnb/app/persistence/repository.py
+!hbnb/run.py
+!hbnb/config.py
+!hbnb/requirements.txt
+!hbnb/README.md
