@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import AmenityFacade
+from app.services.facade import HBnBFacade
 
 api = Namespace('amenities', description='Amenity operations')
 
@@ -14,7 +14,8 @@ class AmenityList(Resource):
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):
         """Retrieve a list of all amenities"""
-        return AmenityFacade.get_all_amenities(), 200
+        amenities = HBnBFacade.get_all_amenities()
+        return amenities, 200
 
     @api.expect(amenity_model)
     @api.response(201, 'Amenity successfully created')
@@ -22,10 +23,11 @@ class AmenityList(Resource):
     def post(self):
         """Register a new amenity"""
         data = api.payload
-        if "name" not in data or not data["name"].strip():
+        name = data.get("name", "").strip()
+        if not name:
             return {"error": "Name is required"}, 400
 
-        new_amenity = AmenityFacade.create_amenity(data["name"])
+        new_amenity = HBnBFacade.create_amenity({"name": name})
         return new_amenity, 201
 
 
