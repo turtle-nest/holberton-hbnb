@@ -49,10 +49,11 @@ class AmenityResource(Resource):
     def put(self, amenity_id):
         """Update an amenity's information"""
         data = api.payload
-        if "name" not in data or not data["name"].strip():
+        name = data.get("name", "").strip()
+        if not name:
             return {"error": "Name is required"}, 400
 
-        update_amenity = AmenityFacade.update_amenity(amenity_id, data["name"])
+        update_amenity = HBnBFacade.update_amenity(amenity_id, {"name": name})
         if update_amenity:
             return update_amenity, 200
         return {"error": "Amenity not found"}, 404
