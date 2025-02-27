@@ -37,7 +37,7 @@ class AmenityResource(Resource):
     @api.response(404, 'Amenity not found')
     def get(self, amenity_id):
         """Get amenity details by ID"""
-        amenity = AmenityFacade.get_amenity_by_id(amenity_id)
+        amenity = HBnBFacade.get_amenity_by_id(amenity_id)
         if amenity:
             return amenity, 200
         return {"error": "Amenity not found"}, 404
