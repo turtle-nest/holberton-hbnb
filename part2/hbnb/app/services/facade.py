@@ -1,4 +1,17 @@
 from app.persistence.repository import InMemoryRepository
+#from app.services.amenity_facade import AmenityFacade
+
+
+class AmenityFacade:
+    def __init__(self):
+        pass  # Implement logic here
+
+    def create_amenity(self, data):
+        pass
+
+    def get_amenity(self, amenity_id):
+        pass
+
 
 class HBnBFacade:
     def __init__(self):
