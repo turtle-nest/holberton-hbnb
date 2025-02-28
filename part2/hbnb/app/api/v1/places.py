@@ -54,8 +54,19 @@ class PlaceList(Resource):
         """Register a new place"""
         facade = HBnBFacade()
         place_data = api.payload
-        new_place = facade.create_place(place_data)
-        return serialize_place(new_place), 201
+        
+        # Validate required fields
+        if not place_data.get('name') or not place_data.get('description') or not place_data.get('city') or \
+           not place_data.get('owner_id') or not place_data.get('latitude') or not place_data.get('longitude') or \
+           not place_data.get('price'):
+            return {"error": "Invalid input data"}, 400
+
+        # Create place
+        try:
+            new_place = facade.create_place(place_data)
+            return serialize_place(new_place), 201
+        except Exception as e:
+            return {"error": str(e)}, 400
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
@@ -74,7 +85,7 @@ class PlaceResource(Resource):
         place = facade.get_place(place_id)
         if place:
             return serialize_place(place), 200
-        return {"error": "Place not found"}, 404
+        return {"error": "Place not found"}, 400
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
@@ -84,10 +95,18 @@ class PlaceResource(Resource):
         """Update a place's information"""
         facade = HBnBFacade()
         place_data = api.payload
+        
+        # Validate required fields
+        if not place_data.get('name') or not place_data.get('description') or not place_data.get('city') or \
+           not place_data.get('owner_id') or not place_data.get('latitude') or not place_data.get('longitude') or \
+           not place_data.get('price'):
+            return {"error": "Invalid input data"}, 400
+        
+        # Update place
         updated_place = facade.update_place(place_id, place_data)
         if updated_place:
             return serialize_place(updated_place), 200
-        return {"error": "Place not found"}, 404
+        return {"error": "Place not found"}, 400
 
     @api.response(204, 'Place deleted')
     def delete(self, place_id):
