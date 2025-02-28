@@ -125,3 +125,96 @@ from app.models.amenity import Amenity
 amenity = Amenity(name="Wi-Fi")
 print(amenity.name)  # Output: Wi-Fi
 ```
+echo '## API Documentation
+
+This section describes the available API endpoints and the expected request and response formats.
+
+### User Endpoints
+
+| Method | Endpoint             | Description                    |
+|--------|----------------------|--------------------------------|
+| POST   | `/api/v1/users/`     | Create a new user             |
+| GET    | `/api/v1/users/`     | Retrieve the list of users    |
+| GET    | `/api/v1/users/<id>` | Retrieve a user by ID         |
+| PUT    | `/api/v1/users/<id>` | Update a user                 |
+
+**Example request to create a user:**
+\`\`\`sh
+curl -X POST http://127.0.0.1:5000/api/v1/users/ \
+     -H "Content-Type: application/json" \
+     -d '"'"'{
+           "first_name": "John",
+           "last_name": "Doe",
+           "email": "john.doe@example.com",
+           "password": "securepassword"
+         }'"'"'
+\`\`\`
+
+**Expected response:**
+\`\`\`json
+{
+    "message": "User created",
+    "id": "169f8bef-9fc7-47d5-b4fa-b9b8e52ad2bb"
+}
+\`\`\`
+
+---
+
+### Amenity Endpoints
+
+| Method | Endpoint                 | Description                    |
+|--------|--------------------------|--------------------------------|
+| POST   | `/api/v1/amenities/`     | Create a new amenity           |
+| GET    | `/api/v1/amenities/`     | Retrieve the list of amenities |
+| GET    | `/api/v1/amenities/<id>` | Retrieve an amenity by ID      |
+| PUT    | `/api/v1/amenities/<id>` | Update an amenity              |
+
+**Example request to retrieve all amenities:**
+\`\`\`sh
+curl -X GET http://127.0.0.1:5000/api/v1/amenities/
+\`\`\`
+
+**Expected response:**
+\`\`\`json
+[
+    {
+        "id": "e21a1c63-f19c-4c74-b8c3-f7efb4a5d12c",
+        "name": "Wi-Fi"
+    }
+]
+\`\`\`
+
+---
+
+## Testing & Validation
+
+To ensure that the API works correctly, we performed multiple tests:
+
+1. **Input validation**: Checking data types and required fields.
+2. **Endpoint testing with cURL**:
+    - Creating and retrieving users and amenities.
+    - Updating user information.
+    - Handling errors (e.g., user not found, invalid request).
+3. **Swagger Documentation**: All endpoints are documented using \`flask-restx\` to generate an interactive API documentation.
+
+### Running Tests
+
+Run unit tests using \`unittest\`:
+\`\`\`sh
+python -m unittest discover tests
+\`\`\`
+
+---
+
+## Conclusion
+
+This project implements the **Presentation**, **Business Logic**, and **Persistence** layers using Flask and \`flask-restx\` to manage a RESTful API. The **User**, **Place**, **Review**, and **Amenity** entities have been developed with their relationships. Each endpoint has been tested to ensure a reliable and functional API.
+
+---
+
+## Authors
+
+- Nicolas Lassouane
+- Salom√e Perton Couriaut
+- Luke Holley-Boutillier
+---
