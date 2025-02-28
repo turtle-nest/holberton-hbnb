@@ -4,7 +4,7 @@ class User(BaseModel):
     """User class that inherits from BaseModel.
     Represents a user with first name, last name, email, and password.
     """
-    def __init__(self, first_name, last_name, email, password, is_admin):
+    def __init__(self, first_name, last_name, email, password, is_admin=False):
         """Initialize a new User instance."""
         super().__init__()
         self._first_name = first_name
