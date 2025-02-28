@@ -6,3 +6,7 @@ class Amenity(BaseModel):
         super().__init__(**kwargs)
         self.id = id
         self.name = name
+
+    def update(self, data):
+        for key, value in data.items():
+            setattr(self, key, value)
