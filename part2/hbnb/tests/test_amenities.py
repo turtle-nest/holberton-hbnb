@@ -32,13 +32,13 @@ class TestAmenityModel(unittest.TestCase):
 
     def test_update_amenity(self):
         updated_data = {"name": "Updated Pool"}
-        self.amenity.update(updated_data)
-        self.repo.update(self.amenity)
+        self.repo.update(self.amenity.id, updated_data)
         updated_amenity = self.repo.get("123")
         self.assertEqual(updated_amenity.name, "Updated Pool")
 
     def test_update_non_existent_amenity(self):
         non_existent = Amenity(id="999", name="Non-existent")
+        updated_data = {"name": "Updated Amenity"}
         result = self.repo.update(non_existent.id, updated_data)
         self.assertIsNone(result)
 
