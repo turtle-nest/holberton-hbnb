@@ -1,9 +1,10 @@
 from flask_restx import Namespace, Resource, fields
-from app.services import facade
+from app.services.facade import HBnBFacade
+from app.persistence.repository import InMemoryRepository
 
 api = Namespace('places', description='Place operations')
 
-
+# Define the models for related entities
 amenity_model = api.model('PlaceAmenity', {
     'id': fields.String(description='Amenity ID'),
     'name': fields.String(description='Name of the amenity')
@@ -16,16 +17,33 @@ user_model = api.model('PlaceUser', {
     'email': fields.String(description='Email of the owner')
 })
 
-
+# Define the place model for input validation and documentation
 place_model = api.model('Place', {
-    'title': fields.String(required=True, description='Title of the place'),
-    'description': fields.String(description='Description of the place'),
-    'price': fields.Float(required=True, description='Price per night'),
+    'name': fields.String(required=True, description='Name of the place'),
+    'description': fields.String(required=True, description='Description of the place'),
+    'city': fields.String(required=True, description='City where the place is located'),
+    'owner_id': fields.Integer(required=True, description='ID of the owner of the place'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's")
+    'price': fields.Float(required=True, description='Price per night'),
+    'amenities': fields.List(fields.String, required=False, description="List of amenities ID's")
 })
+
+def serialize_place(place):
+    """Convert Place object to a dictionary"""
+    return {
+        'id': place.id,
+        'name': place.name,
+        'description': place.description,
+        'city': place.city,
+        'owner_id': place.owner_id,
+        'latitude': place.latitude,
+        'longitude': place.longitude,
+        'price': place.price,
+        'amenities': [amenity.id for amenity in place.amenities]
+    }
+
+repo = InMemoryRepository()
 
 @api.route('/')
 class PlaceList(Resource):
@@ -34,14 +52,17 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
-
-        pass
+        facade = HBnBFacade()
+        place_data = api.payload
+        new_place = facade.create_place(place_data)
+        return serialize_place(new_place), 201
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-
-        pass
+        facade = HBnBFacade()
+        places = facade.get_all_places()
+        return [serialize_place(place) for place in places], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -49,8 +70,11 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get place details by ID"""
-
-        pass
+        facade = HBnBFacade()
+        place = facade.get_place(place_id)
+        if place:
+            return serialize_place(place), 200
+        return {"error": "Place not found"}, 404
 
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
@@ -58,5 +82,19 @@ class PlaceResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, place_id):
         """Update a place's information"""
+        facade = HBnBFacade()
+        place_data = api.payload
+        updated_place = facade.update_place(place_id, place_data)
+        if updated_place:
+            return serialize_place(updated_place), 200
+        return {"error": "Place not found"}, 404
 
-        pass
+    @api.response(204, 'Place deleted')
+    def delete(self, place_id):
+        """Delete a place given its identifier"""
+        facade = HBnBFacade()
+        facade.delete_place(place_id)
+        return '', 204
+
+# Export the namespace
+places_ns = api
