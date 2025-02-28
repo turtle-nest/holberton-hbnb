@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request
 from flask_restx import Namespace, Resource, fields
 from app.models.user import User
 from app.persistence.repository import InMemoryRepository
@@ -10,9 +10,11 @@ user_model = ns.model("User", {
     "first_name": fields.String(required=True, description="User's first name"),
     "last_name": fields.String(required=True, description="User's last name"),
     "email": fields.String(required=True, description="User's email address"),
+    "password": fields.String(required=True, description="User's password"),
 })
 
 repo = InMemoryRepository()
+print(repo.get_all())  # Testing
 
 @ns.route("/")
 class UserList(Resource):
@@ -22,7 +24,8 @@ class UserList(Resource):
         """Return list of users"""
         try:
             users = repo.get_all()
-            return jsonify([{"id": u.id, "first_name": u.first_name, "last_name": u.last_name, "email": u.email} for u in users])
+            # Return a dictionary, Flask will automatically convert it to JSON
+            return {"users": [{"id": u.id, "first_name": u.first_name, "last_name": u.last_name, "email": u.email} for u in users]}, 200
         except Exception as e:
             return {"error": "An error occurred while retrieving users"}, 500
 
@@ -33,14 +36,22 @@ class UserList(Resource):
     def post(self):
         """Create a new user"""
         data = request.json
-        if not data.get("first_name") or not data.get("last_name") or not data.get("email"):
+        print(f"Received data: {data}")  # Debug
+
+        # Validation des données
+        if not data.get("first_name") or not data.get("last_name") or not data.get("email") or not data.get("password"):
+            print("Validation failed: missing fields")  # Debug
             return {"error": "All fields are required"}, 400
 
         try:
             user = User(**data)
+            print(f"Created user object: {user}")  # Debug
             repo.add(user)
-            return jsonify({"message": "User created", "id": user.id}), 201
+            print("User added to repository")  # Debug
+            # Return a dictionary with the success message and user ID
+            return {"message": "User created", "id": user.id}, 201
         except Exception as e:
+            print(f"Error while creating user: {str(e)}")  # Debug
             return {"error": "An error occurred while creating the user"}, 500
 
 @ns.route("/<string:user_id>")
@@ -50,12 +61,15 @@ class UserResource(Resource):
     @ns.response(500, "Internal server error")
     def get(self, user_id):
         """Return a user by ID"""
+        print(f"Searching for user with ID: {user_id}")  # Testing
         try:
             user = repo.get(user_id)
             if not user:
+                print("User not found")  # Testing
                 return {"error": "User not found"}, 404
-            return jsonify({"id": user.id, "first_name": user.first_name, "last_name": user.last_name, "email": user.email})
+            return {"id": user.id, "first_name": user.first_name, "last_name": user.last_name, "email": user.email}, 200
         except Exception as e:
+            print(f"Error: {str(e)}")  # Testing
             return {"error": "An error occurred while retrieving the user"}, 500
 
     @ns.expect(user_model)
@@ -79,6 +93,6 @@ class UserResource(Resource):
             user.email = data.get("email", user.email)
             user.save()
 
-            return jsonify({"message": "User updated", "id": user.id}), 200
+            return {"message": "User updated", "id": user.id}, 200
         except Exception as e:
             return {"error": "An error occurred while updating the user"}, 500
