@@ -19,8 +19,10 @@
 -Request:
 ```json
 {
- "email": "existing_user@example.com",
- "name": "John Doe"
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "password": "password123"
 }
 ```
 - Expected status code: 400 Bad Request
@@ -61,8 +63,7 @@
 - Request:
 ```json
 {
-"name": "New Equipment",
-"type": "Type1"
+  "name": "New equipement"
 }
 ```
 - Expected status code: 201 Created
@@ -82,8 +83,7 @@
 - Request:
 ```json
 {
-"name": "Updated Equipment",
-"type": "UpdatedType"
+"name": "Updated Equipment"
 }
 ```
 - Expected status code: 200 OK
@@ -100,9 +100,10 @@
 - Request:
 ```json
 {
-"place_id": "123",
-"review": "Excellent place!",
-"rating": 5
+"text": "Excellent place!",
+"rating": 5,
+"user_id": "123",
+"place_id": "456",
 }
 ```
 - Expected status code: 201 Created
