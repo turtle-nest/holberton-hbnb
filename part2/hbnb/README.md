@@ -53,11 +53,6 @@ hbnb/
 
 ### Installing Dependencies
 
-List the required Python packages in requirements.txt:
-```
-flask
-flask-restx
-```
 Install dependencies:
 ```
 pip install -r requirements.txt
@@ -216,6 +211,6 @@ This project implements the **Presentation**, **Business Logic**, and **Persiste
 ## Authors
 
 - Nicolas Lassouane
-- SalomÃe Perton Couriaut
+- Salomï¿½e Perton Couriaut
 - Luke Holley-Boutillier
 ---
