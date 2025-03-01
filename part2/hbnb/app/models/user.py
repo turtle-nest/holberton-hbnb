@@ -1,11 +1,11 @@
+import re
 from app.models.base_model import BaseModel
 
 class User(BaseModel):
     """User class that inherits from BaseModel.
     Represents a user with first name, last name, email, and password.
     """
-    # Class-level attribute to store emails for uniqueness check
-    _existing_emails = set()  # Using a set to store emails
+    _existing_emails = set()  # Using a set to store emails for uniqueness check
 
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         """Initialize a new User instance."""
@@ -24,6 +24,8 @@ class User(BaseModel):
     @first_name.setter
     def first_name(self, value):
         """Set the user's first name."""
+        if value is None:
+            raise ValueError("First name cannot be None")
         if not isinstance(value, str):
             raise TypeError("First name must be a string")
         if not value.strip():
@@ -40,6 +42,8 @@ class User(BaseModel):
     @last_name.setter
     def last_name(self, value):
         """Set the user's last name."""
+        if value is None:
+            raise ValueError("Last name cannot be None")
         if not isinstance(value, str):
             raise TypeError("Last name must be a string")
         if not value.strip():
@@ -56,9 +60,11 @@ class User(BaseModel):
     @email.setter
     def email(self, value):
         """Set the user's email address."""
+        if value is None:
+            raise ValueError("Email cannot be None")
         if not isinstance(value, str):
             raise TypeError("Email must be a string")
-        if "@" not in value or "." not in value:
+        if not self.is_valid_email_format(value):
             raise ValueError("Invalid email format")
         if not self.is_email_unique(value):
             raise ValueError("Email must be unique")
@@ -74,6 +80,8 @@ class User(BaseModel):
     @password.setter
     def password(self, value):
         """Set the user's password."""
+        if value is None:
+            raise ValueError("Password cannot be None")
         if not isinstance(value, str):
             raise TypeError("Password must be a string")
         if len(value) < 8:
@@ -95,3 +103,8 @@ class User(BaseModel):
     def is_email_unique(self, email):
         """Check if the email is unique by looking up in the set of existing emails."""
         return email not in User._existing_emails
+
+    def is_valid_email_format(self, email):
+        """Validate the email format using a regular expression."""
+        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        return re.match(email_regex, email) is not None
