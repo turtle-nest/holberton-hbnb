@@ -1,7 +1,8 @@
 from app.models.base_model import BaseModel
 from app.models.user import User
 from app.models.place import Place
-"""Module that define the Review class"""
+
+"""Module that defines the Review class"""
 
 class Review(BaseModel):
     """Review class with specific attributes and relationships"""
@@ -11,9 +12,9 @@ class Review(BaseModel):
         if not text:
             raise ValueError("Review text cannot be empty")
         self.text = text
-        self.rating = rating
-        self.user_id = user_id
-        self.place_id = place_id
+        self.rating = self.validate_rating(rating)
+        self.user_id = self.validate_user(user_id)
+        self.place_id = self.validate_place(place_id)
 
     def validate_rating(self, rating):
         """Ensure the rating is an integer between 1 and 5"""
@@ -23,12 +24,14 @@ class Review(BaseModel):
 
     def validate_place(self, place_id):
         """Ensure the place_id is valid and exists"""
-        if not Place.get(place_id):
+        place = Place.get(place_id)
+        if not place:
             raise ValueError("Invalid place_id: Place not found")
         return place_id
 
     def validate_user(self, user_id):
         """Ensure the user_id is valid and exists"""
-        if not User.get(user_id):
+        user = User.get(user_id)
+        if not user:
             raise ValueError("Invalid user_id: User not found")
         return user_id
