@@ -7,11 +7,11 @@ class User(BaseModel):
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         """Initialize a new User instance."""
         super().__init__()
-        self._first_name = first_name
-        self._last_name = last_name
-        self._email = email
-        self._password = password
-        self._is_admin = is_admin
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.password = password
+        self.is_admin = is_admin
 
     @property
     def first_name(self):
@@ -25,6 +25,8 @@ class User(BaseModel):
             raise TypeError("First name must be a string")
         if not value.strip():
             raise ValueError("First name cannot be empty")
+        if len(value) > 50:
+            raise ValueError("First name cannot be longer than 50 characters")
         self._first_name = value
 
     @property
@@ -39,6 +41,8 @@ class User(BaseModel):
             raise TypeError("Last name must be a string")
         if not value.strip():
             raise ValueError("Last name cannot be empty")
+        if len(value) > 50:
+            raise ValueError("Last name cannot be longer than 50 characters")
         self._last_name = value
 
     @property
@@ -53,6 +57,9 @@ class User(BaseModel):
             raise TypeError("Email must be a string")
         if "@" not in value or "." not in value:
             raise ValueError("Invalid email format")
+        # Assuming a method `is_email_unique` exists to check if the email is unique
+        if not self.is_email_unique(value):
+            raise ValueError("Email must be unique")
         self._email = value
 
     @property
@@ -68,3 +75,21 @@ class User(BaseModel):
         if len(value) < 8:
             raise ValueError("Password must be at least 8 characters long")
         self._password = value
+
+    @property
+    def is_admin(self):
+        """Get whether the user is an admin."""
+        return self._is_admin
+
+    @is_admin.setter
+    def is_admin(self, value):
+        """Set whether the user is an admin."""
+        if not isinstance(value, bool):
+            raise TypeError("is_admin must be a boolean value")
+        self._is_admin = value
+
+    def is_email_unique(self, email):
+        """Check if the email is unique in the database. Placeholder function."""
+        # This is where you would query your database or data store
+        # For now, we'll assume it's always unique.
+        return True
