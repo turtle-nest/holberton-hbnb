@@ -8,7 +8,6 @@ This phase of the HBnB project involves implementing the core functionalities of
 
 ## Project Structure
 ```
-```
 hbnb/
 |-- app/
 |   |-- __init__.py
@@ -36,8 +35,6 @@ hbnb/
 |-- config.py
 |-- requirements.txt
 |-- README.md
-
-```
 
 ```
 ### Folder and File Descriptions
