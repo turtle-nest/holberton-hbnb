@@ -16,7 +16,7 @@
 
 - Method: POST
 - URL: /users
--Request:
+- Request:
 ```json
 {
   "first_name": "John",
