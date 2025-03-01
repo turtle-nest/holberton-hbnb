@@ -27,7 +27,7 @@ def serialize_review(review):
 
 repo = InMemoryRepository()
 
-@reviews_ns.route('/')
+@reviews_ns.route('/', methods=['GET', 'POST'])
 class ReviewList(Resource):
     @reviews_ns.expect(review_model)
     @reviews_ns.response(201, 'Review successfully created')
@@ -46,7 +46,7 @@ class ReviewList(Resource):
         reviews = facade.get_all_reviews()
         return [serialize_review(review) for review in reviews], 200
 
-@reviews_ns.route('/<review_id>')
+@reviews_ns.route('/<review_id>', methods=['GET', 'PUT', 'DELETE'])
 class ReviewResource(Resource):
     @reviews_ns.response(200, 'Review details retrieved successfully')
     @reviews_ns.response(404, 'Review not found')
@@ -77,7 +77,7 @@ class ReviewResource(Resource):
             return {'message': 'Review deleted successfully'}, 200
         return {'message': 'Review not found'}, 404
 
-@reviews_ns.route('/places/<place_id>/reviews')
+@reviews_ns.route('/places/<place_id>/reviews', methods=['GET'])
 class PlaceReviewList(Resource):
     @reviews_ns.response(200, 'List of reviews for the place retrieved successfully')
     @reviews_ns.response(404, 'Place not found')

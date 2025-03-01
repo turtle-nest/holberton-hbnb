@@ -16,7 +16,7 @@ user_model = ns.model("User", {
 repo = InMemoryRepository()
 print(repo.get_all())  # Testing
 
-@ns.route("/")
+@ns.route("/", methods=["GET", "POST"])
 class UserList(Resource):
     @ns.response(200, "List of users retrieved successfully")
     @ns.response(500, "Internal server error")
@@ -54,7 +54,7 @@ class UserList(Resource):
             print(f"Error while creating user: {str(e)}")  # Debug
             return {"error": "An error occurred while creating the user"}, 500
 
-@ns.route("/<string:user_id>")
+@ns.route("/<string:user_id>", methods=["GET", "PUT"])
 class UserResource(Resource):
     @ns.response(200, "User details retrieved successfully")
     @ns.response(404, "User not found")

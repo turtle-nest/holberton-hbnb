@@ -45,7 +45,7 @@ def serialize_place(place):
 
 repo = InMemoryRepository()
 
-@api.route('/')
+@api.route('/', methods=['GET', 'POST'])
 class PlaceList(Resource):
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
@@ -75,7 +75,7 @@ class PlaceList(Resource):
         places = facade.get_all_places()
         return [serialize_place(place) for place in places], 200
 
-@api.route('/<place_id>')
+@api.route('/<place_id>', methods=['GET', 'PUT', 'DELETE'])
 class PlaceResource(Resource):
     @api.response(200, 'Place details retrieved successfully')
     @api.response(404, 'Place not found')

@@ -19,7 +19,7 @@ def serialize_amenity(amenity):
 
 repo = InMemoryRepository()
 
-@amenities_ns.route('/')
+@amenities_ns.route('/', methods=['GET', 'POST'])
 class AmenityList(Resource):
     @amenities_ns.response(200, 'List of amenities retrieved successfully')
     def get(self):
@@ -40,7 +40,7 @@ class AmenityList(Resource):
         new_amenity = HBnBFacade().create_amenity({"name": name})
         return serialize_amenity(new_amenity), 201
 
-@amenities_ns.route('/<int:amenity_id>')
+@amenities_ns.route('/<int:amenity_id>', methods=['GET', 'PUT'])
 class AmenityResource(Resource):
     @amenities_ns.response(200, 'Amenity details retrieved successfully')
     @amenities_ns.response(404, 'Amenity not found')
