@@ -1,5 +1,7 @@
 # Swagger Documentation
 
+Flask-RESTx automatically generates Swagger documentation for endpoints.
+
 ## 1. Introduction
 
 - Goal: Test the various API endpoints to ensure behavior conforms to specifications.
