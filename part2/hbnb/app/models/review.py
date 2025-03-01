@@ -8,6 +8,8 @@ class Review(BaseModel):
     def __init__(self, text, rating, user_id, place_id, **kwargs):
         """Initialize a new Review instance"""
         super().__init__(**kwargs)
+        if not text:
+            raise ValueError("Review text cannot be empty")
         self.text = text
         self.rating = rating
         self.user_id = user_id
