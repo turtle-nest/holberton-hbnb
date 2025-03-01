@@ -4,6 +4,9 @@ class User(BaseModel):
     """User class that inherits from BaseModel.
     Represents a user with first name, last name, email, and password.
     """
+    # Class-level attribute to store emails for uniqueness check
+    _existing_emails = set()  # Using a set to store emails
+
     def __init__(self, first_name, last_name, email, password, is_admin=False):
         """Initialize a new User instance."""
         super().__init__()
@@ -57,10 +60,11 @@ class User(BaseModel):
             raise TypeError("Email must be a string")
         if "@" not in value or "." not in value:
             raise ValueError("Invalid email format")
-        # Assuming a method `is_email_unique` exists to check if the email is unique
         if not self.is_email_unique(value):
             raise ValueError("Email must be unique")
         self._email = value
+        # Add the email to the set of existing emails once it's successfully set
+        User._existing_emails.add(value)
 
     @property
     def password(self):
@@ -89,7 +93,5 @@ class User(BaseModel):
         self._is_admin = value
 
     def is_email_unique(self, email):
-        """Check if the email is unique in the database. Placeholder function."""
-        # This is where you would query your database or data store
-        # For now, we'll assume it's always unique.
-        return True
+        """Check if the email is unique by looking up in the set of existing emails."""
+        return email not in User._existing_emails
