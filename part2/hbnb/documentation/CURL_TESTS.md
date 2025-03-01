@@ -126,7 +126,7 @@ curl -X POST "http://127.0.0.1:5000/api/v1/reviews/" -H "Content-Type: applicati
 | /places/      | Create valid place    | ✅ Passed | 200 OK          |
 | /places/      | Latitude out of range | ✅ Passed | 400 Bad Request |
 | /reviews/     | Create valid review   | ✅ Passed | 200 OK          |
-| /reviews/     | Missing review text   | ✅ Passed | 400 Bad Request |
+| /reviews/     | Missing review text   | ❌ Not yet | 400 Bad Request |
 
 
 Almost all tests were successfully conducted and passed as expected, ensuring robust validation and error handling across all API endpoints.
