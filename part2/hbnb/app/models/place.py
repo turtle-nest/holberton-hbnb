@@ -12,21 +12,21 @@ class Place(BaseModel):
     def __init__(self, name, description, city, owner_id, latitude, longitude, price, amenities=None):
         """Initialize a new Place instance."""
         super().__init__()
-        self._name = name
-        self._description = description
-        self._city = city
-        self._owner_id = owner_id
-        self._latitude = latitude
-        self._longitude = longitude
-        self._price = price
-        self._reviews = []
-        self._amenities = []
+        self.name = name
+        self.description = description
+        self.city = city
+        self.owner_id = owner_id
+        self.latitude = latitude
+        self.longitude = longitude
+        self.price = price
+        self.reviews = []
+        self.amenities = []
 
         if amenities:
             for amenity_id in amenities:
                 amenity = self.get_amenity_by_id(amenity_id)
                 if amenity:
-                    self._amenities.append(amenity)
+                    self.amenities.append(amenity)
 
         # Validate attributes
         self.validate_price()
@@ -41,6 +41,8 @@ class Place(BaseModel):
     @name.setter
     def name(self, value):
         """Set the place's name."""
+        if value is None:
+            raise ValueError("Name cannot be None")
         if not isinstance(value, str):
             raise TypeError("Name must be a string")
         if not value.strip():
@@ -81,12 +83,13 @@ class Place(BaseModel):
     @owner_id.setter
     def owner_id(self, value):
         """Set the place's owner ID."""
+        if value is None:
+            raise ValueError("Owner ID cannot be None")
         if not isinstance(value, str):
             raise TypeError("Owner ID must be a string")
         if not value.strip():
             raise ValueError("Owner ID cannot be empty")
         self._owner_id = value
-
 
     @property
     def price(self):
@@ -96,8 +99,12 @@ class Place(BaseModel):
     @price.setter
     def price(self, value):
         """Set the place's price."""
-        if not isinstance(value, (int, float)) or value < 0:
-            raise ValueError("Price must be a non-negative float")
+        if value is None:
+            raise ValueError("Price cannot be None")
+        if not isinstance(value, (int, float)):
+            raise TypeError("Price must be a number")
+        if value <= 0:
+            raise ValueError("Price must be a positive number")
         self._price = value
 
     @property
@@ -108,6 +115,8 @@ class Place(BaseModel):
     @latitude.setter
     def latitude(self, value):
         """Set the place's latitude."""
+        if value is None:
+            raise ValueError("Latitude cannot be None")
         if not isinstance(value, (int, float)) or not (-90 <= value <= 90):
             raise ValueError("Latitude must be a float between -90 and 90")
         self._latitude = value
@@ -120,6 +129,8 @@ class Place(BaseModel):
     @longitude.setter
     def longitude(self, value):
         """Set the place's longitude."""
+        if value is None:
+            raise ValueError("Longitude cannot be None")
         if not isinstance(value, (int, float)) or not (-180 <= value <= 180):
             raise ValueError("Longitude must be a float between -180 and 180")
         self._longitude = value
@@ -157,8 +168,8 @@ class Place(BaseModel):
 
     def validate_price(self):
         """Validate the price attribute."""
-        if not isinstance(self._price, (int, float)) or self._price < 0:
-            raise ValueError("Price must be a non-negative float")
+        if not isinstance(self._price, (int, float)) or self._price <= 0:
+            raise ValueError("Price must be a positive number")
 
     def validate_latitude(self):
         """Validate the latitude attribute."""
