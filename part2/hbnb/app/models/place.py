@@ -60,6 +60,35 @@ class Place(BaseModel):
         self._description = value
 
     @property
+    def city(self):
+        """Get the place's city."""
+        return self._city
+
+    @city.setter
+    def city(self, value):
+        """Set the place's city."""
+        if not isinstance(value, str):
+            raise TypeError("City must be a string")
+        if not value.strip():
+            raise ValueError("City cannot be empty")
+        self._city = value
+
+    @property
+    def owner_id(self):
+        """Get the place's owner ID."""
+        return self._owner_id
+
+    @owner_id.setter
+    def owner_id(self, value):
+        """Set the place's owner ID."""
+        if not isinstance(value, str):
+            raise TypeError("Owner ID must be a string")
+        if not value.strip():
+            raise ValueError("Owner ID cannot be empty")
+        self._owner_id = value
+
+
+    @property
     def price(self):
         """Get the place's price."""
         return self._price
@@ -125,3 +154,18 @@ class Place(BaseModel):
     def get_amenity_by_id(self, amenity_id):
         """Retrieve an Amenity object by its ID."""
         return Amenity(id=amenity_id, name=f"Amenity {amenity_id}")
+
+    def validate_price(self):
+        """Validate the price attribute."""
+        if not isinstance(self._price, (int, float)) or self._price < 0:
+            raise ValueError("Price must be a non-negative float")
+
+    def validate_latitude(self):
+        """Validate the latitude attribute."""
+        if not isinstance(self._latitude, (int, float)) or not (-90 <= self._latitude <= 90):
+            raise ValueError("Latitude must be a float between -90 and 90")
+
+    def validate_longitude(self):
+        """Validate the longitude attribute."""
+        if not isinstance(self._longitude, (int, float)) or not (-180 <= self._longitude <= 180):
+            raise ValueError("Longitude must be a float between -180 and 180")
