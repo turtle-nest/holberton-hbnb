@@ -185,7 +185,9 @@ sequenceDiagram
     end
 ```
 ## Conclusion
-This project implements the **Presentation**, **Business Logic**, and **Persistence** layers using Flask and `flask-restx` to manage a RESTful API. The **User**, **Place**, **Review**, and **Amenity** entities have been developed with their relationships. Each endpoint has been tested to ensure a reliable and functional API.
+
+This project implements the Presentation, Business Logic, and Persistence layers using Flask and `flask-restx` to manage a RESTful API. The User, Place**, Review, and Amenity entities have been developed with their relationships. Each endpoint has been tested to ensure a reliable and functional API.
+
 ---
 ## Authors
 - Nicolas Lassouane
