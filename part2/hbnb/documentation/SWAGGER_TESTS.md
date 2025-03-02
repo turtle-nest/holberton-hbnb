@@ -6,7 +6,7 @@ Flask-RESTx automatically generates Swagger documentation for endpoints.
 
 - Goal: Test the various API endpoints to ensure behavior conforms to specifications.
 
-- Test environment: Specify the URL of the test API (e.g. http://127.0.0.1:5000/api/v1/).
+- Test environment: Specify the URL of the test API (e.g. http://127.0.0.1:5000/swagger).
 
 - Noticed: 500 errors are related to a missing database. A 500 (Internal Server Error) error usually indicates that there is a server-side problem, often caused by a lack of data management or an attempt to access a resource that does not exist (such as an unconfigured database)
 
