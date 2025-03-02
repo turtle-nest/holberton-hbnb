@@ -90,7 +90,8 @@ This section describes the available API endpoints and the expected request and 
 | GET    | `/api/v1/users/`     | Retrieve the list of users    |
 | GET    | `/api/v1/users/<id>` | Retrieve a user by ID         |
 | PUT    | `/api/v1/users/<id>` | Update a user                 |
-**Example request to create a user:**
+
+Example request to create a user:
 ```sh
 curl -X POST http://127.0.0.1:5000/api/v1/users/ \
      -H "Content-Type: application/json" \
@@ -116,7 +117,8 @@ curl -X POST http://127.0.0.1:5000/api/v1/users/ \
 | GET    | `/api/v1/amenities/`     | Retrieve the list of amenities |
 | GET    | `/api/v1/amenities/<id>` | Retrieve an amenity by ID      |
 | PUT    | `/api/v1/amenities/<id>` | Update an amenity              |
-**Example request to retrieve all amenities:**
+
+Example request to retrieve all amenities:
 ```sh
 curl -X GET http://127.0.0.1:5000/api/v1/amenities/
 ```
