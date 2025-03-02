@@ -1,4 +1,5 @@
-# filepath: /Users/nicolas/holberton-hbnb/part2/hbnb/tests/test_app.py
+#!/usr/bin/python3
+
 import unittest
 from app import create_app
 
@@ -9,7 +10,7 @@ class BasicTestCase(unittest.TestCase):
 
     def test_home(self):
         response = self.client.get('/')
-        self.assertEqual(response.status_code, 404)  # Assurez-vous que la route existe
+        self.assertEqual(response.status_code, 404)
 
 if __name__ == '__main__':
     unittest.main()

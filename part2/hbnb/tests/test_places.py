@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import unittest
-from app.models.place import Place
 from app import create_app
 
 class TestPlaceModel(unittest.TestCase):
