@@ -40,15 +40,18 @@ hbnb/
 |-- README.md
 ```
 ### Folder and File Descriptions
-- app/: Main application folder.
-- api/: API endpoints organized by version (v1/).
-- models/: Business logic classes (user.py, place.py, etc.).
-- services/: Implements the Facade pattern to manage interaction between layers.
-- persistence/: In-memory repository for object storage and validation.
-- run.py: Flask application entry point.
-- config.py: Application environment and settings configuration.
-- requirements.txt: List of Python packages required.
-- README.md: Project overview and documentation.
+| Directory/File      | Description                                                       |
+|---------------------|-------------------------------------------------------------------|
+| `app/`              | Main application folder.                                         |
+| `api/`              | API endpoints organized by version (`v1/`).                      |
+| `models/`           | Business logic classes (`user.py`, `place.py`, etc.).             |
+| `services/`        | Implements the Facade pattern to manage interaction between layers.|
+| `persistence/`     | In-memory repository for object storage and validation.           |
+| `run.py`           | Flask application entry point.                                    |
+| `config.py`        | Application environment and settings configuration.               |
+| `requirements.txt` | List of Python packages required.                                 |
+| `README.md`        | Project overview and documentation.                               |
+
 ## Requirements
 ### Installing Dependencies
 List of the required Python packages in requirements.txt:
@@ -88,7 +91,7 @@ This section describes the available API endpoints and the expected request and 
 | GET    | `/api/v1/users/<id>` | Retrieve a user by ID         |
 | PUT    | `/api/v1/users/<id>` | Update a user                 |
 **Example request to create a user:**
-\`\`\`sh
+```sh
 curl -X POST http://127.0.0.1:5000/api/v1/users/ \
      -H "Content-Type: application/json" \
      -d '"'"'{
@@ -97,14 +100,14 @@ curl -X POST http://127.0.0.1:5000/api/v1/users/ \
            "email": "john.doe@example.com",
            "password": "securepassword"
          }'"'"'
-\`\`\`
+```
 **Expected response:**
-\`\`\`json
+```json
 {
     "message": "User created",
     "id": "169f8bef-9fc7-47d5-b4fa-b9b8e52ad2bb"
 }
-\`\`\`
+```
 ---
 ### Amenity Endpoints
 | Method | Endpoint                 | Description                    |
@@ -114,18 +117,18 @@ curl -X POST http://127.0.0.1:5000/api/v1/users/ \
 | GET    | `/api/v1/amenities/<id>` | Retrieve an amenity by ID      |
 | PUT    | `/api/v1/amenities/<id>` | Update an amenity              |
 **Example request to retrieve all amenities:**
-\`\`\`sh
+```sh
 curl -X GET http://127.0.0.1:5000/api/v1/amenities/
-\`\`\`
+```
 **Expected response:**
-\`\`\`json
+```json
 [
     {
         "id": "e21a1c63-f19c-4c74-b8c3-f7efb4a5d12c",
         "name": "Wi-Fi"
     }
 ]
-\`\`\`
+```
 ---
 ## Testing & Validation
 To ensure that the API works correctly, we performed multiple tests:
@@ -139,12 +142,13 @@ To ensure that the API works correctly, we performed multiple tests:
     - All endpoints are documented using \`flask-restx\` to generate an interactive API documentation.
     - Documentation on testing with Swagger here: [Swagger tests](https://github.com/SpacePistache/holberton-hbnb/blob/main/part2/hbnb/documentation/SWAGGER_TESTS.md)
 ### Running Tests
-Run unit tests using \`unittest\`:
-\`\`\`sh
+Run unit tests using `unittest`:
+```sh
 python -m unittest discover tests
-\`\`\`
+```
 ---
 ## Sequence Diagramme
+```mermaid
 sequenceDiagram
     actor User
     participant API as app.api.v1.places
@@ -179,8 +183,9 @@ sequenceDiagram
         ServiceFacade-->>API: Error: Place not available for selected dates
         API-->>User: 409 Conflict (Not Available)
     end
+```
 ## Conclusion
-This project implements the **Presentation**, **Business Logic**, and **Persistence** layers using Flask and \`flask-restx\` to manage a RESTful API. The **User**, **Place**, **Review**, and **Amenity** entities have been developed with their relationships. Each endpoint has been tested to ensure a reliable and functional API.
+This project implements the **Presentation**, **Business Logic**, and **Persistence** layers using Flask and `flask-restx` to manage a RESTful API. The **User**, **Place**, **Review**, and **Amenity** entities have been developed with their relationships. Each endpoint has been tested to ensure a reliable and functional API.
 ---
 ## Authors
 - Nicolas Lassouane
