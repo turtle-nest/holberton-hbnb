@@ -20,6 +20,14 @@
 *.tmp
 *.pid
 
+# Ignore the __pycache__ directory
+__pycache__/
+
+# Ignore some test files
+complete_test.py
+test_place.py
+test_review.py
+
 # Do not ignore the hbnb directory and its contents
 !hbnb/
 !hbnb/**/

@@ -15,6 +15,18 @@ class User(BaseModel):
         self.email = email
         self.password = password
         self.is_admin = is_admin
+        if email in User._users:
+            raise ValueError("Email must be unique")
+        User._users[email] = self
+
+    @classmethod
+    def get(cls, user_id):
+        """Get a user by ID."""
+        for user in cls._users.values():
+            if user.id == user_id:
+                return user
+        return None
+
 
     @property
     def first_name(self):
@@ -100,6 +112,7 @@ class User(BaseModel):
             raise TypeError("is_admin must be a boolean value")
         self._is_admin = value
 
+    @classmethod
     def is_email_unique(self, email):
         """Check if the email is unique by looking up in the set of existing emails."""
         return email not in User._existing_emails

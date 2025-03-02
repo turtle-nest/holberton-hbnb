@@ -140,6 +140,10 @@ class Place(BaseModel):
         """Get the list of reviews."""
         return self._reviews
 
+    @reviews.setter
+    def reviews(self, value):
+        self._reviews = value
+
     def add_review(self, review_text, rating, user_id):
         """Add a review to the place."""
         review = PlaceReview(review_text, rating, user_id)
