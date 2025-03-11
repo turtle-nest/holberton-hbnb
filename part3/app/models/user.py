@@ -1,3 +1,4 @@
+from flask_jwt_extended import create_access_token
 from .basemodel import BaseModel
 import re
 import bcrypt
@@ -75,6 +76,12 @@ class User(BaseModel):
     def delete_review(self, review):
         """Add an amenity to the place."""
         self.reviews.remove(review)
+
+    def generate_token(self):
+        """create a jwt token for the user"""
+        token = create_access_token(identity=self.email, additional_claims={"is_admin": self.is_admin})
+        return token
+
 
     def to_dict(self):
         return {
