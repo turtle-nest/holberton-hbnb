@@ -1,6 +1,6 @@
 from .basemodel import BaseModel
 import re
-
+import bcrypt
 
 class User(BaseModel):
     emails = set()
@@ -84,7 +84,16 @@ class User(BaseModel):
             'email': self.email,
             'password': self.password
         }
-    
+
+    def to_safe_dict(self):
+        """Return a dictionary without the password field"""
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email
+        }
+
     def hash_password(self, password):
         """Hashes the password before storing it."""
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')

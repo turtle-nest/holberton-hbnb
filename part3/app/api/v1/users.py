@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
+from werkzeug.security import generate_password_hash
 
 api = Namespace('users', description='User operations')
 
@@ -17,7 +18,6 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
-    @api.response(400, 'Password incorrect')
     def post(self):
         """Register a new user"""
         user_data = api.payload
@@ -28,8 +28,10 @@ class UserList(Resource):
             return {'error': 'Email already registered'}, 400
 
         try:
+            # Hash the password before saving
+            user_data['password'] = generate_password_hash(user_data['password'])
             new_user = facade.create_user(user_data)
-            return new_user.to_dict(), 201
+            return {'id': new_user.id, 'message': 'User successfully created'}, 201
         except Exception as e:
             return {'error': str(e)}, 400
         
@@ -38,7 +40,7 @@ class UserList(Resource):
         """Retrieve a list of users"""
         users = facade.get_users()
         return [user.to_dict() for user in users], 200
-    
+
 @api.route('/<user_id>')
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
@@ -48,19 +50,23 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404
-        return user.to_dict(), 200
+        return user.to_safe_dict(), 200
 
     @api.expect(user_model)
     @api.response(200, 'User updated successfully')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input data')
     def put(self, user_id):
+        """Update user information"""
         user_data = api.payload
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404
         try:
+            # If the password is provided in the update request, hash it before saving
+            if 'password' in user_data:
+                user_data['password'] = generate_password_hash(user_data['password'])
             facade.update_user(user_id, user_data)
-            return user.to_dict(), 200
+            return {'id': user.id, 'message': 'User updated successfully'}, 200
         except Exception as e:
             return {'error': str(e)}, 400
