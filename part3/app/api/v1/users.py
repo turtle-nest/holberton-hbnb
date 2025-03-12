@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from werkzeug.security import generate_password_hash
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 api = Namespace('users', description='User operations')
 
@@ -34,7 +35,8 @@ class UserList(Resource):
             return {'id': new_user.id, 'message': 'User successfully created'}, 201
         except Exception as e:
             return {'error': str(e)}, 400
-        
+    
+    @jwt_required()
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
         """Retrieve a list of users"""
