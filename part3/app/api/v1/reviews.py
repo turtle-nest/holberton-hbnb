@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 
@@ -13,22 +14,30 @@ review_model = api.model('Review', {
 
 @api.route('/')
 class ReviewList(Resource):
+    @jwt_required()
     @api.expect(review_model)
     @api.response(201, 'Review successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new review"""
         review_data = api.payload
+        current_user_id = get_jwt_identity()
+
         place = facade.get_place(review_data['place_id'])
         if not place:
             return {'error': 'Place not found'}, 400
-        user = facade.get_user(review_data['user_id'])
+        user = facade.get_user(current_user_id)
         if not user:
             return {'error': 'User not found'}, 400
         if place.owner.id == user.id:
             return {'error': 'User cannot review their own place'}, 400
         try:
-            new_review = facade.create_review(review_data)
+            new_review = facade.create_review(
+                    place_id=review_data['place_id'],
+                    user_id=current_user_id,
+                    comment=review_data['comment'],
+                    rating=review_data['rating']
+                    )
             return new_review.to_dict(), 201
         except Exception as e:
             return {'error': str(e)}, 400
@@ -49,6 +58,7 @@ class ReviewResource(Resource):
             return {'error': 'Review not found'}, 404
         return review.to_dict(), 200
 
+    @jwt_required()
     @api.expect(review_model)
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
@@ -66,6 +76,7 @@ class ReviewResource(Resource):
         except Exception as e:
             return {'error': str(e)}, 400
 
+    @jwt_required()
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
     def delete(self, review_id):
