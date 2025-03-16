@@ -62,10 +62,12 @@ class UserResource(Resource):
     def put(self, user_id):
         """Update user information"""
         current_user = get_jwt_identity()
-        if not current_user.get('is_admin'):
+        current_user = facade.get_user(current_user)
+        
+        if not current_user or not current_user.is_admin:
             return {'error': 'Admin privileges required'}, 403
 
-        user_data = api.playload
+        user_data = api.payload
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404
