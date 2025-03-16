@@ -28,6 +28,13 @@ complete_test.py
 test_place.py
 test_reviews.py
 
+# Ignore the migrations folder except migration versions
+migrations/
+!migrations/versions/
+
+# Ignore the instance folder (contains sensitive data like configs and database files)
+instance/
+
 # Do not ignore the hbnb directory and its contents
 !hbnb/
 !hbnb/**/

@@ -1,20 +1,31 @@
 from flask import Flask
 from flask_restx import Api
-from app.api.v1.users import api as users_ns
-from app.api.v1.amenities import api as amenities_ns
-from app.api.v1.places import api as places_ns
-from app.api.v1.reviews import api as reviews_ns
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
-from app.api.v1.auth import api as auth_ns
+from flask_sqlalchemy import SQLAlchemy
+from config import DevelopmentConfig
 
 bcrypt = Bcrypt()
+jwt = JWTManager()
+db = SQLAlchemy()
 
-def create_app(config_class="config.DevelopmentConfig"):
+
+def create_app(config_class=DevelopmentConfig):
+    """Factory function to create the Flask application"""
     app = Flask(__name__)
     app.config.from_object(config_class)
+    print("Using database URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+
+    jwt.init_app(app)
     bcrypt.init_app(app)
-    jwt = JWTManager(app)
+    db.init_app(app)
+
+    from app.api.v1.users import api as users_ns
+    from app.api.v1.amenities import api as amenities_ns
+    from app.api.v1.places import api as places_ns
+    from app.api.v1.reviews import api as reviews_ns
+    from app.api.v1.auth import api as auth_ns
+
     api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API')
 
     api.add_namespace(users_ns, path='/api/v1/users')
@@ -22,4 +33,5 @@ def create_app(config_class="config.DevelopmentConfig"):
     api.add_namespace(places_ns, path='/api/v1/places')
     api.add_namespace(reviews_ns, path='/api/v1/reviews')
     api.add_namespace(auth_ns, path='/api/v1/auth')
+
     return app

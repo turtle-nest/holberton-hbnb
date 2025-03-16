@@ -2,8 +2,10 @@ from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from app.services.facade import HBnBFacade
 
 api = Namespace('users', description='User operations')
+facade = HBnBFacade()
 
 # Define the user model for input validation and documentation
 user_model = api.model('User', {
@@ -19,6 +21,7 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
+    @api.response(400, 'Invalid password data')
     def post(self):
         """Register a new user"""
         user_data = api.payload
@@ -35,7 +38,7 @@ class UserList(Resource):
             return {'id': new_user.id, 'message': 'User successfully created'}, 201
         except Exception as e:
             return {'error': str(e)}, 400
-    
+
     @jwt_required()
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
@@ -61,12 +64,6 @@ class UserResource(Resource):
     @jwt_required()
     def put(self, user_id):
         """Update user information"""
-        current_user = get_jwt_identity()
-        current_user = facade.get_user(current_user)
-        
-        if not current_user or not current_user.is_admin:
-            return {'error': 'Admin privileges required'}, 403
-
         user_data = api.payload
         user = facade.get_user(user_id)
         if not user:
@@ -75,7 +72,27 @@ class UserResource(Resource):
             # If the password is provided in the update request, hash it before saving
             if 'password' in user_data:
                 user_data['password'] = generate_password_hash(user_data['password'])
-            facade.update_user(user_id, user_data)
-            return {'id': user.id, 'message': 'User updated successfully'}, 200
+
+            updated_user = facade.update_user(user_id, user_data)
+
+            if not updated_user:
+                return {'error': 'Update failed'}, 400
+
+            return {'id': updated_user.id, 'message': 'User updated successfully', 'data': updated_user.to_dict()}, 200
+
+        except Exception as e:
+            return {'error': str(e)}, 400
+
+    @api.response(200, 'User deleted successfully')
+    @api.response(404, 'User not found')
+    def delete(self, user_id):
+        """Delete a user by ID"""
+        user = facade.get_user(user_id)
+        if not user:
+            return {'error': 'User not found'}, 404
+
+        try:
+            facade.delete_user(user_id)
+            return {'message': 'User deleted successfully'}, 200
         except Exception as e:
             return {'error': str(e)}, 400

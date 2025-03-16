@@ -8,6 +8,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///development.dbe')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 config = {
     'development': DevelopmentConfig,

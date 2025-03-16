@@ -37,17 +37,23 @@ class PlaceList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
+
         place_data = api.payload
-        owner = place_data.get('owner_id', None)
 
-        if owner is None or len(owner) == 0:
+        if not place_data:
             return {'error': 'Invalid input data.'}, 400
+        
+        owner = place_data.get('owner_id')
+        if not owner:
+            return {'error': 'Missing owner_id'}, 400
 
-        user = facade.user_repo.get_by_attribute('id', owner)
+        user = facade.user_repository.get_by_attribute('id', owner)
         if not user:
-            return {'error': 'Invalid input data'}, 400
+            return {'error': 'Owner not found'}, 400
+        
         try:
             new_place = facade.create_place(place_data)
+
             return new_place.to_dict(), 201
         except Exception as e:
             return {'error': str(e)}, 400
@@ -65,10 +71,8 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         """Get place details by ID"""
-        place = facade.get_place(place_id)
-        if not place:
-            return {'error': 'Place not found'}, 404
-        return place.to_dict_list(), 200
+        places = facade.get_all_places()
+        return [place.to_dict() for place in places], 200
 
     @jwt_required()
     @api.expect(place_model)
@@ -76,14 +80,22 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
     def put(self, place_id):
-        """Update a place's information"""
+        """Update a place"""
+
         place_data = api.payload
+
+        if not place_data:
+            return {'error': 'Invalid input data.'}, 400
+
         place = facade.get_place(place_id)
         if not place:
             return {'error': 'Place not found'}, 404
+
         try:
             facade.update_place(place_id, place_data)
+
             return {'message': 'Place updated successfully'}, 200
+
         except Exception as e:
             return {'error': str(e)}, 400
 
@@ -121,4 +133,3 @@ class PlaceReviewList(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
         return [review.to_dict() for review in place.reviews], 200
-    
