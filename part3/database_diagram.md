@@ -1,3 +1,6 @@
+## Database Entity-relationship Diagram
+
+```mermaid
 erDiagram
     USER {
         int id PK
