@@ -79,7 +79,7 @@ class User(BaseModel):
 
     def generate_token(self):
         """create a jwt token for the user"""
-        token = create_access_token(identity=self.email, additional_claims={"is_admin": self.is_admin})
+        token = create_access_token(identity={"id":self.id, "is_admin": self.is_admin})
         return token
 
 
@@ -88,7 +88,7 @@ class User(BaseModel):
             'id': self.id,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'email': self.email,
+            'email': self.email,y
         }
 
     def to_safe_dict(self):
