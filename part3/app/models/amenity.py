@@ -14,7 +14,7 @@ class Amenity(BaseModel):
     id = db.Column(db.Integer, primary_key=True)  # Primary key
     name = db.Column(db.String(50), nullable=False, unique=True)
 
-    places = db.relationship('Place', secondary=place_amenity, back_populates='amenities')
+    places = db.relationship('Place', secondary=place_amenity, backref='amenities')
 
     def update(self, data):
         return super().update(data)

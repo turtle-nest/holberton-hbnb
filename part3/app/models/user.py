@@ -14,6 +14,8 @@ class User(BaseModel, db.Model):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+    places = db.relationship('Place', backref='owner', cascade='all, delete-orphan')
+    reviews = db.relationship('Review', backref='user', cascade='all, delete-orphan')
 
     @validates('email')
     def validate_email(self, key, email):
