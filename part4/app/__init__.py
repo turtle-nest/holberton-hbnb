@@ -1,8 +1,9 @@
 from flask import Flask
-from app.api import api_bp        # Nouveau : API REST via blueprint
-import config
-from app.views import main_bp     # Frontend blueprint (HTML)
+from flask_cors import CORS
+from app.api import api_bp
+from app.views import main_bp
 from app.extensions import bcrypt, jwt, db
+import config
 
 
 def create_app(config_class=config.DevelopmentConfig):
@@ -15,6 +16,7 @@ def create_app(config_class=config.DevelopmentConfig):
     bcrypt.init_app(app)
     jwt.init_app(app)
     db.init_app(app)
+    CORS(app)
 
     # Enregistrer les blueprints
     app.register_blueprint(api_bp)    # API RESTX montée sur /api/v1/
