@@ -234,3 +234,19 @@ footer {
         align-items: center;
     }
 }
+
+.logout-button {
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.logout-button:hover {
+    opacity: 0.8;
+}
