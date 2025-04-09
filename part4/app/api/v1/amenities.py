@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 
 
-api = Namespace('amenities', description='Amenity operations')
+api = Namespace('amenities', description='Amenity operations', path='/api/v1/amenities')
 
 # Define the amenity model for input validation and documentation
 amenity_model = api.model('Amenity', {

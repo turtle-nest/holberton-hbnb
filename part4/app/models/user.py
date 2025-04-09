@@ -1,4 +1,4 @@
-from app import bcrypt, db
+from app.extensions import db, bcrypt
 from .basemodel import BaseModel
 import re
 from sqlalchemy.orm import validates

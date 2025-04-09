@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Review</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
+</head>
+<body>
+    <header>
+        <!-- Logo -->
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="App Logo" class="logo">
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html" class="login-button">Login</a>
+        </nav>
+    </header>
+    <main>
+        <!-- Add something to idfentify the place you're reviewing -->
+        <form id="review-form" class="add-review form">
+            <h2>Add a Review for Charming Cottage</h2>
+            <label for="review">Your Review:</label>
+            <textarea id="review" name="review" required></textarea>
+          
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+              <option value="5">⭐⭐⭐⭐⭐</option>
+              <option value="4">⭐⭐⭐⭐</option>
+              <option value="3">⭐⭐⭐</option>
+              <option value="2">⭐⭐</option>
+              <option value="1">⭐</option>
+            </select>
+
+            <button type="submit" class="details-button">Submit Review</button>
+        </form>
+    </main>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <footer>
+        <p>© 2025 All rights reserved.</p>
+    </footer>
+</body>
+</html>

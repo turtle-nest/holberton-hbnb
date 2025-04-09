@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 
-api = Namespace('places', description='Place operations')
+api = Namespace('places', description='Place operations', path='/api/v1/places')
 
 # Define the models for related entities
 amenity_model = api.model('PlaceAmenity', {
@@ -50,7 +50,7 @@ class PlaceList(Resource):
     def get(self):
         """Retrieve a list of all places"""
         places = facade.get_all_places()
-        return [place.to_dict() for place in places], 200
+        return [place.to_dict_list() for place in places], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):

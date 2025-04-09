@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 
-api = Namespace('reviews', description='Review operations')
+api = Namespace('reviews', description='Review operations', path='/api/v1/reviews')
 
 # Define the review model for input validation and documentation
 review_model = api.model('Review', {
