@@ -30,6 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Token and user data ---
   const token = getTokenFromCookie();
 
+  const loginLink = document.getElementById('login-link');
+
+  if (loginLink) {
+    if (token) {
+      // Hide the login link if user is connected
+      loginLink.style.display = 'none';
+    } else {
+      loginLink.style.display = 'inline-block';
+    }
+  }
+
+
   // --- Display user's first name if connected ---
   const welcomeDiv = document.getElementById('welcome');
   if (token) {
