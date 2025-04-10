@@ -120,9 +120,6 @@ To fix it, you must enable CORS support in your Flask backend using `flask_cors`
 This will ensure your frontend can communicate properly with the API when running on separate origins during development.
 
 ---
-Parfait ! Voici la **section corrigée** à intégrer dans ton `README.md`, en précisant que le fichier s'appelle `development.db` et que la vérification se fait avec **sqlite-web** :
-
----
 
 ### 🗃️ Initialize the Database
 
