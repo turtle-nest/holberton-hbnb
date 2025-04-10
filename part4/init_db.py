@@ -15,12 +15,12 @@ with app.app_context():
         print("❌ Erreur de création des tables :", e)
 
     # --- Users ---
-    password1 = bcrypt.generate_password_hash("password123").decode("utf-8")
+    password1 = "password123"
     user1 = User(first_name="Alice", last_name="Doe", email="alice@example.com", password=password1)
-    
+
     password2 = bcrypt.generate_password_hash("password456").decode("utf-8")
     user2 = User(first_name="Bob", last_name="Smith", email="bob@example.com", password=password2)
-    
+
     db.session.add_all([user1, user2])
     db.session.commit()
     print("👤 Users created")

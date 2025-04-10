@@ -1,11 +1,10 @@
+<!-- add_review.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add a Review</title>
-
-  <!-- CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
 </head>
@@ -22,9 +21,9 @@
   <main>
     <h1 class="page-title">Leave a Review</h1>
 
-    <section id="place-details" class="place-details">
+    <div id="place-details" class="place-details">
       <!-- Place details will be populated dynamically -->
-    </section>
+    </div>
 
     <section id="reviews">
       <h2>User Reviews</h2>
@@ -40,10 +39,11 @@
 
       <form id="review-form">
         <label for="review-text">Review:</label>
-        <textarea id="review" name="review" required></textarea>
+        <textarea id="review-text" name="review" required></textarea>
 
         <label for="rating">Rating:</label>
         <select id="rating" name="rating" required>
+          <option value="" disabled selected>Choose a note</option>
           <option value="5">⭐⭐⭐⭐⭐</option>
           <option value="4">⭐⭐⭐⭐</option>
           <option value="3">⭐⭐⭐</option>
@@ -64,6 +64,17 @@
       const link = document.getElementById('add-review-link');
       if (placeId && link) {
         link.href = `place.html?id=${placeId}`;
+      }
+
+      // Dynamically added "Leave a Review" button in the details page
+      const detailsSection = document.getElementById('place-details');
+      if (detailsSection && placeId) {
+        const reviewBtn = document.createElement('a');
+        reviewBtn.href = `add_review.html?id=${placeId}`;
+        reviewBtn.textContent = "Leave a Review";
+        reviewBtn.className = "details-button";
+        reviewBtn.style.marginTop = '1rem';
+        detailsSection.appendChild(reviewBtn);
       }
     });
   </script>
