@@ -1,51 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Review</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add a Review</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon.png') }}">
 </head>
 <body>
-    <header>
-        <!-- Logo -->
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="App Logo" class="logo">
+  <header>
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="App Logo" class="logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html" id="login-link" class="login-button">Login</a>
+      <button id="logout-button" class="logout-button">Logout</button>
+    </nav>
+  </header>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="login.html" class="login-button">Login</a>
-        </nav>
-    </header>
-    <main>
-        <!-- Add something to idfentify the place you're reviewing -->
-        <form id="review-form" class="add-review form">
-            <h2>Add a Review for Charming Cottage</h2>
-            <label for="review">Your Review:</label>
-            <textarea id="review" name="review" required></textarea>
-          
-            <label for="rating">Rating:</label>
-            <select id="rating" name="rating" required>
-              <option value="5">⭐⭐⭐⭐⭐</option>
-              <option value="4">⭐⭐⭐⭐</option>
-              <option value="3">⭐⭐⭐</option>
-              <option value="2">⭐⭐</option>
-              <option value="1">⭐</option>
-            </select>
+  <main>
+    <h1 class="page-title">Leave a Review</h1>
 
-            <button type="submit" class="details-button">Submit Review</button>
-        </form>
-    </main>
+    <section id="place-details" class="place-details">
+      <!-- Place details will be populated dynamically -->
+    </section>
 
-    <!-- JS -->
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <section id="reviews">
+      <h2>User Reviews</h2>
+      <!-- Reviews will be populated dynamically -->
+    </section>
 
-    <footer>
-        <p>© 2025 All rights reserved.</p>
-    </footer>
+    <section id="add-review">
+      <h2>Your Review</h2>
+
+      <a id="add-review-link" class="details-button" style="margin-bottom: 1rem; display:inline-block;">
+        View Full Place Page
+      </a>
+
+      <form id="review-form">
+        <label for="review-text">Review:</label>
+        <textarea id="review" name="review" required></textarea>
+
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+          <option value="5">⭐⭐⭐⭐⭐</option>
+          <option value="4">⭐⭐⭐⭐</option>
+          <option value="3">⭐⭐⭐</option>
+          <option value="2">⭐⭐</option>
+          <option value="1">⭐</option>
+        </select>
+
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const placeId = params.get('id');
+      const link = document.getElementById('add-review-link');
+      if (placeId && link) {
+        link.href = `place.html?id=${placeId}`;
+      }
+    });
+  </script>
+
+  <footer>
+    <p>© 2025 All rights reserved.</p>
+  </footer>
 </body>
 </html>

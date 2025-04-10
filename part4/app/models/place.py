@@ -15,6 +15,8 @@ class Place(BaseModel):
 
     owner = db.relationship('User', backref='places', lazy='select')
 
+    image_url = db.Column(db.String(255), nullable=True)
+
     @validates('title')
     def validate_title(self, key, value):
         if not isinstance(value, str):
@@ -73,9 +75,8 @@ class Place(BaseModel):
             'title': self.title,
             'description': self.description,
             'price': self.price,
-            'latitude': self.latitude,
-            'longitude': self.longitude,
-            'owner_id': self.owner.id
+            'location': f"{self.latitude}, {self.longitude}",
+            "image_url": self.image_url,
         }
     
     def to_dict_list(self):
@@ -84,8 +85,8 @@ class Place(BaseModel):
             'title': self.title,
             'description': self.description,
             'price': self.price,
-            'latitude': self.latitude,
-            'longitude': self.longitude,
+            'location': f"{self.latitude}, {self.longitude}",
+            'image_url': self.image_url,
             'owner': self.owner.to_dict(),
             'amenities': [amenity.to_dict() for amenity in self.amenities],
             'reviews': [review.to_dict() for review in self.reviews]

@@ -1,7 +1,6 @@
 # Ignore the .venv/ directory
 venv/
 .DS_Store
-init_db.py
 
 # Ignore all binaries
 *.o
@@ -35,7 +34,7 @@ migrations/
 !migrations/versions/
 
 # Ignore the instance folder (contains sensitive data like configs and database files)
-instance/
+
 
 # Do not ignore the hbnb directory and its contents
 !hbnb/
