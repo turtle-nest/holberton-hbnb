@@ -174,7 +174,7 @@ This will launch a web interface (default: [http://127.0.0.1:8080](http://127.0.
 - [ ] List of places loads dynamically and filters work
 - [ ] Details of a place are displayed correctly
 - [ ] Add review form is conditionally rendered
-- [ ] Reviews are submitted and confirmed
+- [ ] Reviews are submitted and confirmed (w.i.p.)
 - [ ] Unauthenticated users are redirected properly
 
 ---
