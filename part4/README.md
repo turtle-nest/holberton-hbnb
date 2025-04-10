@@ -120,6 +120,53 @@ To fix it, you must enable CORS support in your Flask backend using `flask_cors`
 This will ensure your frontend can communicate properly with the API when running on separate origins during development.
 
 ---
+Parfait ! Voici la **section corrigée** à intégrer dans ton `README.md`, en précisant que le fichier s'appelle `development.db` et que la vérification se fait avec **sqlite-web** :
+
+---
+
+### 🗃️ Initialize the Database
+
+To create your tables and insert sample data (users, places, reviews, amenities), you must run the script `init_db.py`.
+
+> Make sure your virtual environment is activated and all dependencies are installed before running this step.
+
+#### 1. Check your database configuration
+
+The database URI is usually defined in `config.py`. Example:
+
+```python
+SQLALCHEMY_DATABASE_URI = "sqlite:///development.db"
+```
+
+You can change this path if needed.
+
+#### 2. Run the database initialization script
+
+```bash
+python3 init_db.py
+```
+
+This will:
+
+- Create all tables using SQLAlchemy models
+- Insert test users, places, amenities, and reviews
+- Link data together (e.g., amenities to places, reviews to users)
+
+#### 3. Visualize the data (optional but recommended)
+
+To inspect your database, run [**sqlite-web**](https://github.com/coleifer/sqlite-web):
+
+```bash
+sqlite_web development.db
+```
+
+This will launch a web interface (default: [http://127.0.0.1:8080](http://127.0.0.1:8080)) where you can:
+
+- View tables and data
+- Run SQL queries
+- Explore relationships
+
+---
 
 ## ✅ Testing Checklist
 
